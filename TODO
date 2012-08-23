@@ -1,0 +1,23 @@
+TODO:
+
+Posting:
+	- go to board/thread
+	- upload handling
+		- files other than images
+		- multiple files at once (may only be a frontend issue)
+		- 
+
+Administration:
+	- implement banning
+		- add bans
+		- enforce bans
+		- proxy bans
+		- whitelists (komturcodes)
+
+Convienience/Output:
+	- implement post popups (>>12345)
+	- implement post formatting (>>12345, >, etc)
+	- implement wordfilters
+	- implement exif data display
+	- implement board-specific template files (e.g. /int/)
+	

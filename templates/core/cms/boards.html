@@ -1,0 +1,6 @@
+{% for board in boards %}
+<a href="/{{ board.identifier }}/" title="{{ board.title|safe }}">/{{ board.identifier }}/ - {{ board.title|safe }}</a><br />
+{% empty %}
+Keine Boards
+{% endfor %}
+

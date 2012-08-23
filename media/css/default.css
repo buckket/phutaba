@@ -1,0 +1,322 @@
+/* Ernstchan */
+
+body {
+  background: #ECE9E2;
+  color: #000000;
+  font: 9pt Tahoma, sans-serif;
+  margin: 0;
+  padding: 8px;
+  margin-bottom: auto;
+}
+
+a {
+  color: #0000CC;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #0000CC;
+  text-decoration: none;
+}
+
+img {
+  border: 0;
+}
+
+blockquote {
+  margin-left: 25px;
+}
+
+form {
+  margin-bottom: 0px
+}
+
+form .trap {
+  display: none;
+}
+
+ul {
+  padding-left: 15px; 
+  list-style: square; 
+}
+
+acronym {
+  cursor: help;
+}
+
+.reflink a {
+  color: inherit;
+  text-decoration: none
+}
+
+.reflink a:hover {
+  font-weight: bold;
+  text-decoration: none
+}
+
+.includelink a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.includelink a:hover {
+  text-decoration: underline;
+}
+
+.menu {
+  float: left;
+}
+
+.banner {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.banner img {
+  border: 1px solid #C2B9A9;
+}
+
+.theader {
+  background: #333333;
+  color: #FFFFFF;
+  font-weight: bold;
+  text-align: center;
+  padding: 2px;
+  width: 100%;
+}
+
+.postblock {
+  background: #706B5E;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 0 5px;
+}
+
+.passvalid {
+  background: #333333;
+  color: #FFFFFF;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+
+.dellist {
+  font-weight: bold;
+  text-align: center;
+}
+
+.delbuttons {
+  text-align: center;
+  padding-bottom: 4px;
+}
+
+.managehead {
+  background: #333333;
+  color: #FFFFFF;
+  padding: 0;
+}
+
+.postlists {
+  width: 100%;
+  padding: 0;
+}
+
+.row1 {
+  background: #DDDDDD;
+  color: #000000;
+}
+
+.row2 {
+  background: #BBBBBB;
+  color: #000000;
+}
+
+.filename {
+  padding-top: 2px;
+}
+
+.filesize {
+  font-style: italic;
+  font-size: 80%;
+  text-decoration: none;
+  width: 200px;
+}
+
+.filetitle {
+  color: #B20000;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.postername, .commentpostername {
+  color: #875D35;
+  font-weight: bold;
+}
+
+.oldpost {
+  color: #B20000;
+  font-weight: bold;
+}
+
+.omittedposts  {
+  color: #707070;
+}
+
+.reply {
+  background: #D7CFC0;
+  border-right: 1px solid #B0A99D;
+  border-bottom: 1px solid #B0A99D;
+  padding-bottom: 10px;
+}
+
+.reply .thread_file {
+  background:none repeat scroll 0 0 #C2B9A9;
+  text-align: center;
+  border: 0;
+  float: left;
+  margin: 5px 20px 20px 5px;
+  line-height: 13px;
+}
+
+.reply blockquote, blockquote :last-child {
+  margin-bottom: 0em
+}
+
+.unkfunc {
+  color: #B55636;
+}
+
+.doubledash {
+  color: #707070;
+  vertical-align:top;
+  clear:both;
+  float:left;
+}
+
+.replytitle {
+  color: #B20000;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.thumbnailmsg {
+  color: #800000;
+  font-size: small;
+}
+
+.abbrev {
+  color: #707070;
+}
+
+.highlight {
+  background: #D7CFC0;
+  border: 2px dashed #B0A99D;
+}
+
+.thread_file {
+  background:none repeat scroll 0 0 #CFCBC4;
+  text-align: center;
+  border: 1px solid #ADADAD;
+  float: left;
+  margin: 5px 20px 20px 5px;
+  line-height: 13px;
+}
+
+.thread_file a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.thread_file a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+.thread_head {
+  font-size: small;
+}
+
+.thread_head_reply {
+  border-bottom: 1px solid #B0A99D;
+}
+
+.thread_body {
+  font-size: normal;
+  clear: right;
+}
+
+.sage{
+  color: #FF0000;
+  font-weight: bold;
+}
+
+.staffpost {
+  color: #560E8C;
+  font-weight: bold;
+}
+
+.sageinfo {
+  vertical-align: top;
+}
+
+.spoiler {
+  background: 000000;
+  color: #000000;
+}
+
+.spoiler:hover {
+  color: #FFFFFF;
+}
+
+.postarea {
+  text-align: center
+}
+
+.postarea table {
+  margin: 0px auto;
+  text-align: left
+}
+
+.thumb {
+  border: none;
+  float: left;
+}
+
+.nothumb {
+  background: #EEEEEE;
+  float: left;
+  border: 2px dashed #AAAAAA;
+  text-align: center;
+  margin: 2px 20px;
+  padding: 1em 0.5em 1em 0.5em;
+}
+
+.userdelete {
+  float: right;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.replypage .replylink {
+  display: none;
+}
+
+div#pagetitle, div#pagesubtitle {
+	color: #333;
+	font-size: x-large;
+	font-weight: bold;
+	text-align: center;
+}
+
+div#pagesubtitle {
+	font-style: italic;
+	font-size: large;
+}
+
+ul.messages {
+	list-style-type: none;
+	list-style: none;
+}
+ul.messages li {
+	font-size: large;
+}

@@ -1,0 +1,58 @@
+{% extends "cms/base.html" %}
+{% load cms %}
+
+{% block content %} 
+ <div class="boards">
+ 
+  <div class="caption">Boards</div>
+  
+  <div class="item">
+   <div class="title">
+    Suchfunktion
+   </div>
+   <div class="content">
+    <form class="search">
+     <input type="text" value="" />
+     <input type="submit" value="Suchen" />
+    </form>
+   </div>
+  </div>
+
+{% for cat in args.boardcategory_items %}
+  <div class="item">
+   <div class="title">
+    {{ cat }}
+   </div>
+   {% for board in cat.board_set.all %}
+   <div class="content">
+    <ul>
+      <li>
+        <a href="/{{ board.identifier }}/">
+          <strong>/{{ board.identifier }}/</strong> {{ board.title }}
+        </a>
+      </li>
+    </ul>
+   </div>
+   {% endfor %}
+  </div>
+{% endfor %}
+ </div>
+
+ 
+ <div class="news">
+ 
+ <div class="caption">News</div>
+ 
+{% for news in args.news_items %}
+  <div class="item">
+   <div class="title">
+    {{news.title}} &mdash; {{news.user}} &mdash; {{news.time|date:"d.m.Y H:i"}}
+   </div>
+   <div class="content">
+    {{news.content_HTML|safe}}
+   </div>
+  </div>
+{% endfor %}
+ </div>
+
+{% endblock %}

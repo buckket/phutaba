@@ -1,0 +1,175 @@
+{% load board %}
+{% if user.is_authenticated %}
+  {% check_perm user board "view_post_data" "may_view_post_data" %}
+  {% check_perm user board "delete" "may_delete" %}
+{% endif %}
+<div class="thread_head">
+  <a name="{{ posts.0.localpk }}"></a> 
+  <label> 
+    <img src="{{ MEDIA_URL }}img/hide.png" title='Thread {{ posts.0.localpk }} verstecken'/>
+    <input type="checkbox" name="delete" value="{{ posts.0.localpk }}" /> 
+    {% if posts.0.title %}
+    <span class="filetitle">{{ posts.0.title }}</span>
+    {% endif %}
+    <span class="postername">{{ posts.0.nick|default:thread.board.default_nick|default_if_none:thread.board.default_nick }}</span>
+    {% if may_view_post_data %}
+      <img class="info" rel="{% url ajax-postinfo posts.0.pk %}" src="{{ MEDIA_URL }}img/info.png" title=''/>
+      <img class="action" rel="{% url ajax-postaction posts.0.pk %}" src="{{ MEDIA_URL }}img/action.png" title='Action Menu' />
+    {% endif %}
+    {% if posts.0.rank %}
+      <span class="staffpost">## {{ posts.0.rank }} ##</span>
+    {% endif %}
+    {{ posts.0.time|date:"d.m.Y H:i:s" }}
+  </label> 
+  <span class="reflink"> <a href="{% url thread thread.board.identifier thread.pk %}#{{ posts.0.localpk }}">#</a>&nbsp;<a href="{% url thread thread.board.identifier thread.pk %}#i{{ posts.0.localpk }}">Nr. {{ posts.0.localpk }}</a> 
+  {% if thread.flag_autosage %}
+    <span class="sage">{{ thread.board.autosage_string }}</span>
+  {% else %}
+    {% if posts.0.flag_sage %}
+      <span class="sage">{{ thread.board.sage_string }}</span>
+    {% endif %}
+  {% endif %}
+  {% if thread.is_sticky %}
+    <span class="sticky"><img src="{{ MEDIA_URL }}img/sticky.png" title="Sticky"/></span>
+  {% endif %}
+  {% if thread.is_locked %}
+    <span class="locked"><img src="{{ MEDIA_URL }}img/locked.png" title="Locked"/></span>
+  {% endif %}
+  </span> 
+  {% if view == "board" %}
+    [<a href="{% url thread thread.board.identifier thread.pk %}">Antworten</a>]
+  {% endif %}
+  {% if false %}
+    <img src="{{ MEDIA_URL }}img/report.png" title="Report"/>
+  {% endif %}
+  </div> 
+  {% for f in posts.0.postfile_set.all %}
+  <div class="thread_file"> <span class="filename">&nbsp;<a title="{{ f.original_name }}" href="{{ f.image.url }}">{{ f.image.url|nopath }}</a>&nbsp;</span><br /> 
+    <span class="filesize">&nbsp;{{ f.filesize|filesizeformat }}, {{ f.imagedimensions }}&nbsp;</span> <span class="thumbnailmsg"></span><br /> 
+    <a href="{{ f.image.url }}"> <img src="{{ f.imagethumb.url }}" class="thumb" /></a>
+  </div>
+  {% endfor %}
+  <div class="thread_body"> 
+    <blockquote>
+      <p>{{ posts.0.content_HTML|safe|linebreaks }}</p>
+    </blockquote>
+    {% if omit %}
+    <span class="omittedposts">{{ omit }} Post{{ omit|pluralize }} ausgeblendet.</span>
+    {% endif %}
+  </div> 
+  {% for p in posts|slice:"1:" %}
+  <table> 
+    <tbody> 
+      <tr> 
+        <td class="doubledash">
+          &gt;&gt;
+        </td> 
+        <td class="reply" id="reply{{ p.localpk }}">
+          <div class="thread_head">
+            <a name="{{ p.localpk }}"></a> 
+            <label> 
+              <input type="checkbox" name="delete" value="{{ p.localpk }}" /> 
+              <span class="replytitle">
+                {{ p.title }}
+              </span>
+              <span class="commentpostername">
+                {{ p.nick|default:thread.board.default_nick }}
+              </span>
+              {% if may_view_post_data %}
+                <img class="info" rel="{% url ajax-postinfo p.pk %}" src="{{ MEDIA_URL }}img/info.png" title=''/>
+                <img class="action" rel="{% url ajax-postaction p.pk %}" src="{{ MEDIA_URL }}img/action.png" title='Action Menu' />
+              {% endif %}
+              {% if p.rank %}
+              <span class="staffpost">## {{ p.rank }} ##</span>
+              {% endif %}
+              {{ p.time|date:"d.m.Y H:i:s" }}
+            </label> 
+            <span class="reflink">
+              <a href="#{{ p.localpk }}">
+                #
+              </a>
+              <a href="#i{{ p.localpk }}">
+                Nr. {{ p.localpk }}
+              </a>
+              {% if p.flag_sage %}
+              <span class="sage">{{ thread.board.sage_string }}</span>
+              {% endif %}
+              {% if false %}
+                <img src="{{ MEDIA_URL }}img/report.png" title="Report"/>
+              {% endif %}
+            </span> 
+          </div> 
+          {% for f in p.postfile_set.all %}
+          <div class="thread_file">
+            <span class="filename">
+              <a title="{{ f.original_name }}" href="{{ f.image.url }}">{{ f.image.url|nopath }}</a>
+            </span><br />
+            <span class="filesize">
+              &nbsp;{{ f.filesize|filesizeformat }}, {{ f.imagedimensions }}&nbsp;
+            </span>
+            <span class="thumbnailmsg">
+
+            </span>
+            <a href="{{ f.image.url }}"> <img src="{{ f.imagethumb.url }}" class="thumb" /></a>
+          </div> 
+          {% endfor %}
+          <div class="thread_body"> 
+            <blockquote>
+              <p>
+                {#<a href="/thread.html#8930" onclick="highlight(8930)">&gt;&gt;8930</a><br />#}
+                {{p.content_HTML|safe|linebreaks}}
+              </p>
+            </blockquote> 
+          </div>
+        </td> 
+      </tr> 
+    </tbody> 
+  </table>
+  {% endfor %}
+</div>
+<br style="clear:both" />
+<script type="text/javascript">
+$(document).ready(function() 
+{
+  {% if may_view_post_data %}
+  $('.info,.action').each(function()
+  {
+    $(this).qtip(
+      {
+        content: {
+          // Set the text to an image HTML string with the correct src URL to the loading image you want to use
+          text: "Ich bin ladend..",
+          url: $(this).attr('rel')
+        },
+        position: {
+          corner: {
+            target: 'bottomLeft', // Position the tooltip above the link
+            tooltip: 'topLeft'
+          },
+          adjust: {
+            screen: true // Keep the tooltip on-screen at all times
+          }
+        },
+        show: { 
+          solo: true // Only show one tooltip at a time
+        },
+        hide: 'unfocus',
+        style: {
+          tip: false, // Apply a speech bubble tip to the tooltip at the designated tooltip corner
+          border: {
+            width: 0,
+            radius: 4
+          },
+          name: 'light', // Use the default light style
+          width: 400 // Set the tooltip width
+        },
+        api: {
+          onRender: function() {
+            //this.elements.target.bind('mouseout', this.hide)
+          }
+        }
+      })
+    });
+    {% endif %}
+  });
+  </script>

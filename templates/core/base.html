@@ -1,0 +1,93 @@
+{% load board %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"> 
+<head>
+	<!-- my name is commander weissbier and this is my favorite imageboard software -->
+	<title>{% block title %}Ernstchan - proudly powered by Phutaba{% endblock %}</title> 
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/default.js"></script> 
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.ba-dotimeout.min.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.qtip-1.0.min.js"></script>
+	<link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.ico" /> 
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css/default.css" type="text/css" media="screen" charset="utf-8" />
+	{% block head_additions %}{% endblock %}
+</head> 
+<body>
+	{% if messages %}
+	<div id="notification" style="position:fixed;top:0px;left:0px;right:0px;width:100%;height:30px;background-color:#FB0;border:2px solid #FA0;padding-bottom:15px;z-index:10;text-align:center;">
+		<ul class="messages">
+			{% for message in messages %}
+			<li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+			{% endfor %}
+		</ul>
+		<div style="position:absolute;bottom:0px;right:0px;background-color:#FB0;">
+			<a href="javascript:" onClick="$('#notification').fadeOut()"><img src="{{ MEDIA_URL }}img/cross-small.png" style="background-color:#FB0;border:0;"/></a>
+		</div>
+	</div>
+	{% endif %}
+{% if user.is_authenticated %}
+	<div style="position:fixed;top:0px;right:0px;padding:2px;background-color:#FFF;z-index:1;" onMouseOver="$('#largemenu').fadeIn();">
+		eingeloggt als <strong>{{user}}</strong>
+	</div>
+	<div id="largemenu" style="display:none;position:fixed;top:0px;right:0px;padding:2px;background-color:#FFF;text-align:right;" onMouseOut="x = setTimeout('$(\'#largemenu\').fadeOut();', 500)" onMouseOver="clearTimeout(x);">
+		eingeloggt als <strong>{{user}}</strong><br/>
+		<a href="/accounts/logout/">ausloggen</a> &laquo;<br/>
+		{% if user.is_staff %}
+			<a href="/admin/">/admin/</a> &laquo;<br/>
+		{% endif %}
+		
+		{% if thread %}
+			<hr style="border-color:#000;"/>
+			<strong>Thread {{thread.pk}}</strong><br/>
+			{% check_perm user board "close" "may_close" %}
+			{% check_perm user board "sticky" "may_sticky" %}
+			{% check_perm user board "delete" "may_delete" %}
+			{% if may_close %}
+				{% if thread.is_locked %}
+					<a href="{% url thread-lock board.identifier thread.pk %}">Unlock</a> &laquo;<br/>
+				{% else %}
+					<a href="{% url thread-lock board.identifier thread.pk %}">Lock</a> &laquo;<br/>
+				{% endif %}
+			{% endif %}
+			{% if may_sticky %}
+				{% if thread.is_sticky %}
+					<a href="{% url thread-sticky board.identifier thread.pk %}">Unsticky</a> &laquo;<br/>
+				{% else %}
+					<a href="{% url thread-sticky board.identifier thread.pk %}">Sticky</a> &laquo;<br/>
+				{% endif %}
+			{% endif %}
+			{% if may_delete %}
+				{% if thread.flag_autosage %}
+					<a href="{% url thread-autosage board.identifier thread.pk %}">Unsage</a> &laquo;<br/>
+				{% else %}
+					<a href="{% url thread-autosage board.identifier thread.pk %}">Sage</a> &laquo;<br/>
+				{% endif %}
+			{% endif %}
+		{% endif %}
+	</div>
+{% endif %}
+	
+	<div class="menu">[ {% board_overview %} ]</div><br /><br />
+	<div class="banner"><img src="{{ MEDIA_URL }}img/banner.png" alt="Ernstchan" title="Ernstchan" /></div> 
+	<div class="name">
+		<div id="pagetitle">{% block pagetitle %}Ernstchan{% endblock %}</div>
+		<div id="pagesubtitle">{% block pagesubtitle %}{% endblock %}</div>
+	</div> 
+	<hr />
+	{% block content %}{% endblock %}
+
+	<div class="menu">[ {% board_overview %} ]</div> 
+
+{% if messages %}
+<script type="text/javascript"> 
+	$(document).ready(function(){
+		$.doTimeout(5000, function(){
+			$('#notification').slideUp();
+		});
+		$('#notification').click(function(){$('#notification').slideUp(300);});
+	});
+</script>
+{% endif %}
+</body> 
+</html>

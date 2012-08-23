@@ -1,0 +1,23 @@
+{% load board %}
+{% check_perm user post.thread.board "delete" "may_delete" %}
+{% check_perm user post.thread.board "ban" "may_ban" %}
+<div style="position:absolute;top:5px;right:5px;"><small>#{{post.pk}}</small></div>
+<h3 style="margin-top:0;">Actions</h3>
+<ul>
+	{% if may_delete %}
+		<li><a href="{% url post-delete post.thread.board.identifier post.thread.pk post.pk  %}">Delete</a></li>
+		<ul>
+		{% for f in post.postfile_set.all %}
+			{% if forloop.first %}<ul>{% endif %}
+			<li><a href="{% url post-delete post.thread.board.identifier post.thread.pk post.pk  %}?file={{f.pk}}">Delete file {{f.fileid}}</a> ({{f.original_name}})</li>
+			{% if forloop.last %}
+				<li><a href="{% url post-delete post.thread.board.identifier post.thread.pk post.pk  %}?file=all">Delete all files</a></li>
+				</ul>
+			{% endif %}
+		{% endfor %}
+		</ul>
+	{% endif %}
+	{% if may_ban %}
+		<li><a href="">Ban</a></li>
+	{% endif %}
+</ul>

@@ -1,0 +1,5 @@
+Required modules:
+* MySQLdb
+* python-sqlite3
+* PIL
+* markdown2

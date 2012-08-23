@@ -1,0 +1,6 @@
+{% for board in boards %}
+<a href="/{{ board.identifier }}/" title="{{ board.title|safe }}">{{ board.identifier }}</a>{% if not forloop.last %} / {% endif %}
+{% empty %}
+Keine Boards
+{% endfor %}
+

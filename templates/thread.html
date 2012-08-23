@@ -1,0 +1,112 @@
+{% extends "core/base.html" %}
+{% load board %}
+
+{% block title %}{{board|safe}}{% endblock %}
+
+{% block pagetitle %}{{board|safe}}{% endblock %}
+{% block pagesubtitle %}{{board.subtitle|safe}}{% endblock %}
+
+{% block content %}
+<div class="theader">Auf Thema #{{thread.pk}} antworten</div> 
+<div class="postarea"> 
+  <form id="postform" action="{% url thread-post board.identifier thread.pk %}" method="post" enctype="multipart/form-data"> 
+{% csrf_token %}
+    <div class="trap"> 
+      <input type="text" name="name" size="28" /> 
+      <input type="text" name="link" size="28" /> 
+    </div>
+    <table> 
+      <tbody>
+        {% if not board.force_nick %}
+        <tr> 
+          <td class="postblock">Name</td> 
+          <td><input type="text" name="field_nick" size="35" /> 
+            <input type="submit" value="Abschicken" /></td> 
+        </tr> 
+        {% endif %}
+        <tr> 
+          <td class="postblock">Betreff</td> 
+          <td><input type="text" name="field_subject" size="35" /> 
+            {% if board.force_nick %}
+            <input type="submit" value="Abschicken" />
+            {% endif %}
+            </td> 
+        </tr> 
+        <tr> 
+          <td class="postblock">{{board.sage_string}}</td> 
+          <td><input type="checkbox" name="field_sage" value="sage" onclick="previewSage(this, 'sage', 'sageinfo')" /> 
+            &nbsp;<span id="sage" class="sage"></span>&nbsp;<span id="sageinfo" class="sageinfo"></span></td> 
+        </tr> 
+        <tr> 
+          <td class="postblock">Kommentar</td> 
+          <td><textarea id="field_comment" name="field_comment" cols="48" rows="6"></textarea> 
+            <img onclick="resizeCommentfield('field4', this)" src="{{ MEDIA_URL }}img/expand.png" alt="" title="Textfeld vergr&ouml;&szlig;ern" /></td> 
+        </tr> 
+{% if user.is_authenticated %}
+	{% check_perm user board "post_as_mod" "may_post_as_mod" %}
+	{% if may_post_as_mod %}
+        <tr>
+          <td class="postblock">Moderator</td> 
+          <td><input type="checkbox" name="field_modpost" value="CSI YEEEEAH"/> 
+            Als Moderator pfostieren</td> 
+        </tr>
+	{% endif %}
+	{% if request.user.is_staff %}
+	<tr>
+	  <td class="postblock">Admin</td>
+	  <td><input type="text" name="field_adminpost" value=""/> (Als $string pfostieren)</td>
+	</tr>
+	{% endif %}
+{% endif %}
+        <tr> 
+          <td class="postblock">Datei</td> 
+          <td><input type="file" name="field_file" size="35" /></td> 
+        </tr> 
+        <tr id="trgetback">
+          <td class="postblock">Gehe zur&uuml;ck</td> 
+          <td><label> 
+              <input name="gb2" value="board" checked="checked" type="radio" /> 
+              zum Board</label> 
+            <label> 
+              <input name="gb2" value="thread" type="radio" /> 
+              zum Faden</label></td> 
+        </tr> 
+        <tr> 
+          <td class="postblock">Passwort</td> 
+          <td><input type="password" name="field_password" size="8" /> 
+            (Optional)</td> 
+        </tr> 
+        <tr> 
+          <td colspan="2"><div class="rules"> 
+              <ul> 
+                <li>7Z, BMP, GIF, JPG, MP3, OGG, PDF, PNG, PSD, RAR, SVG, WMA, ZIP + max. 10 MB</li> 
+                <li>Dateien, die gegen das US-Recht versto&szlig;en, sind hier verboten.</li> 
+				<li>Bitte nur <acronym title="Not Safe for Work">NSFW</acronym>!</li> 
+              </ul> 
+            </div></td> 
+        </tr> 
+      </tbody> 
+    </table> 
+  </form> 
+</div> 
+<script type="text/javascript">set_inputs("postform")</script>
+<form id="delform2" action="delete" method="post">
+{% thread thread request %}
+</form> 
+<form id="delform" action="delete" method="post">
+  <div style="clear: both;"></div> 
+  <hr /> 
+  [ <a href="{% url board board.identifier %}">Zur&uuml;ck</a> ]
+  <table class="userdelete"> 
+    <tbody> 
+      <tr> 
+        <td><input type="hidden" name="task" value="delete" /> 
+          Passwort
+          <input type="password" name="password" size="8" /> 
+          <input value="L&ouml;schen" type="submit" /></td> 
+      </tr> 
+    </tbody> 
+  </table> 
+</form> 
+<script type="text/javascript">set_delpass("delform")</script> 
+{% endblock %}

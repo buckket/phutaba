@@ -1,0 +1,13 @@
+{% load ajax %}
+<div style="position:absolute;top:5px;right:5px;"><small>#{{post.pk}}</small></div>
+<table>
+	<tr>
+		<th>IP:</th>
+		<td>{{post.ip}} (<em>{{post.host}}</em>)</td>
+	</tr>
+	<tr>
+		<th>User-Agent:</th>
+		<td style="font-size: x-small;">{{post.useragent}}</td>
+	</tr>
+	{% geoip_info post request %}
+</table>
